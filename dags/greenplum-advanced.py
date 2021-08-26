@@ -9,23 +9,18 @@ from datetime import datetime, timedelta
 states = ["CO", "WA", "OR"]
 email_to = "example@example.com"
 
-# Default settings applied to all tasks
-default_args = {
-    "owner": "airflow",
-    "depends_on_past": False,
-    "email_on_failure": False,
-    "email_on_retry": False,
-    "retries": 1,
-    "retry_delay": timedelta(minutes=1),
-}
-
 # Instantiate DAG
 with DAG(
     "greenplum_advanced",
     start_date=datetime(2021, 1, 1),
     max_active_runs=3,
     schedule_interval="@daily",
-    default_args=default_args,
+    default_args={
+        "email_on_failure": False,
+        "email_on_retry": False,
+        "retries": 1,
+        "retry_delay": timedelta(minutes=1),
+    },
     catchup=False,
     template_searchpath="/usr/local/airflow/include",
 ) as dag:
